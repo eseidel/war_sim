@@ -1,14 +1,13 @@
 name: war_sim
-description: A sample command-line application.
+description: Simulate the card-game war and print stats.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/eseidel/war_sim
 
 environment:
-  sdk: '>=3.0.0-259.0.dev <4.0.0'
+  sdk: '>=2.19.0 <4.0.0'
 
-# Add regular dependencies here.
-dependencies:
-  # path: ^1.8.0
+dependencies: 
+  stats: ^2.0.0
 
 dev_dependencies:
   lints: ^2.0.0

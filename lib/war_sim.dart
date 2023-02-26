@@ -133,9 +133,9 @@ class Simulator {
   Simulator.newGame(this.rules) : state = GameState.newGame();
 
   void wonRoundDueToOutOfCards(PlayerState winner) {
-    var loser = winner == state.player1 ? state.player2 : state.player1;
-    print(
-        '${loser.name}: ran out of cards during war. ${winner.name} wins the war.');
+    // var loser = winner == state.player1 ? state.player2 : state.player1;
+    // print(
+    //     '${loser.name}: ran out of cards during war. ${winner.name} wins the war.');
     resolveRound(winner);
   }
 
@@ -185,9 +185,9 @@ class Simulator {
   void playGame() {
     while (state.player1.hasCards && state.player2.hasCards) {
       playRound();
-      if (state.stats.roundCount % 100 == 0) {
-        printCardCounts(state);
-      }
+      // if (state.stats.roundCount % 100 == 0) {
+      //   printCardCounts(state);
+      // }
     }
   }
 }

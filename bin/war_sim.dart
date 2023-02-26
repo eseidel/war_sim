@@ -1,10 +1,28 @@
+import 'package:stats/stats.dart' as stats_package;
 import 'package:war_sim/war_sim.dart';
 
-void main(List<String> arguments) {
+void printAggregateStatistics(List<Stats> gameStats) {
+  void printStats(String label, Iterable<int> values) {
+    var stats = stats_package.Stats.fromData(values);
+    print("$label: ${stats.withPrecision(3)}");
+  }
+
+  printStats("Rounds", gameStats.map((stats) => stats.roundCount));
+  printStats("Wars", gameStats.map((stats) => stats.warCount));
+}
+
+List<Stats> runSimulations(int count) {
   final rules = Rules();
-  final sim = Simulator.newGame(rules);
-  sim.playGame();
-  final stats = sim.state.stats;
-  print(
-      "${sim.winner.name} won in ${stats.roundCount} rounds with ${stats.warCount} wars.");
+  final gameStats = <Stats>[];
+  for (int i = 0; i < count; i++) {
+    final sim = Simulator.newGame(rules);
+    sim.playGame();
+    gameStats.add(sim.state.stats);
+  }
+  return gameStats;
+}
+
+void main(List<String> arguments) {
+  final gameStats = runSimulations(1000);
+  printAggregateStatistics(gameStats);
 }
