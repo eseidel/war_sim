@@ -11,8 +11,7 @@ void printAggregateStatistics(List<Stats> gameStats) {
   printStats("Wars", gameStats.map((stats) => stats.warCount));
 }
 
-List<Stats> runSimulations(int count) {
-  final rules = Rules();
+List<Stats> runSimulations(Rules rules, int count) {
   final gameStats = <Stats>[];
   for (int i = 0; i < count; i++) {
     final sim = Simulator.newGame(rules);
@@ -23,6 +22,7 @@ List<Stats> runSimulations(int count) {
 }
 
 void main(List<String> arguments) {
-  final gameStats = runSimulations(1000);
+  final rules = Rules();
+  final gameStats = runSimulations(rules, 10000);
   printAggregateStatistics(gameStats);
 }

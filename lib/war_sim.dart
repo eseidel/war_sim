@@ -1,11 +1,15 @@
 // Rules
-
 class Rules {
-  // My kid insists there are extra cards per war, but most rules I've seen
-  // seem to suggest it's 3.  I want to see how this affects game lengths.
-  int cardsPerWar = 3;
-  // When to shuffle?  Do you shuffle all cards or just the discard pile?
-  // What is the order of cards put back in your deck.
+  // My kid insists there are no extra cards per war, but most rules I've seen
+  // seem to suggest it's 3.  More makes games shorter if out of cards during
+  // war causes you to lose the war (or game).
+  int cardsPerWar = 0;
+
+  // When to shuffle?
+  // Shuffle only when you need a card?  Shuffle when your opponent does?
+  // Do you shuffle all cards or just the discard pile?
+  // Do you never shuffle and just add in the discard pile in a specific order?
+  // If so, what is the order of cards put back in your deck?
 
   // What happens if run out of cards during war? (currently: lose the war).
   // Other options include losing the entire game, or using the last card
@@ -43,12 +47,13 @@ int compare(Card a, Card b) => rankValue(a) - rankValue(b);
 bool isSameRank(Card a, Card b) => rankValue(a) == rankValue(b);
 
 class PlayerState {
-  String name;
+  final String name;
+  final Rules rules;
   List<Card> deck;
   List<Card> discard;
   List<Card> board;
 
-  PlayerState(this.name, this.deck, this.discard, this.board);
+  PlayerState(this.name, this.rules, this.deck, this.discard, this.board);
 
   List<Card> get playerDeck => deck + discard;
 
@@ -104,18 +109,22 @@ class Stats {
 }
 
 class GameState {
+  final Rules rules;
   PlayerState player1;
   PlayerState player2;
   Stats stats;
 
-  GameState(this.player1, this.player2, this.stats);
+  GameState(this.rules, this.player1, this.player2, this.stats);
 
-  factory GameState.newGame() {
+  factory GameState.newGame(Rules rules) {
     var deck = List.generate(52, (i) => i);
     deck.shuffle();
     var half = deck.length ~/ 2;
-    return GameState(PlayerState('p1', deck.sublist(0, half), [], []),
-        PlayerState('p2', deck.sublist(half), [], []), Stats());
+    return GameState(
+        rules,
+        PlayerState('p1', rules, deck.sublist(0, half), [], []),
+        PlayerState('p2', rules, deck.sublist(half), [], []),
+        Stats());
   }
 }
 
@@ -130,7 +139,7 @@ class Simulator {
 
   Simulator(this.rules, this.state);
 
-  Simulator.newGame(this.rules) : state = GameState.newGame();
+  Simulator.newGame(this.rules) : state = GameState.newGame(rules);
 
   void wonRoundDueToOutOfCards(PlayerState winner) {
     // var loser = winner == state.player1 ? state.player2 : state.player1;
