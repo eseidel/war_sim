@@ -3,7 +3,7 @@ class Rules {
   // My kid insists there are no extra cards per war, but most rules I've seen
   // seem to suggest it's 3.  More makes games shorter if out of cards during
   // war causes you to lose the war (or game).
-  int cardsPerWar = 0;
+  int cardsPerWar;
 
   // When to shuffle?
   // Shuffle only when you need a card?  Shuffle when your opponent does?
@@ -14,6 +14,8 @@ class Rules {
   // What happens if run out of cards during war? (currently: lose the war).
   // Other options include losing the entire game, or using the last card
   // played as the tie-breaker.
+
+  Rules({this.cardsPerWar = 3});
 }
 
 typedef Card = int;

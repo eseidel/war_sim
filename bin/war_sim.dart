@@ -4,7 +4,8 @@ import 'package:war_sim/war_sim.dart';
 void printAggregateStatistics(List<Stats> gameStats) {
   void printStats(String label, Iterable<int> values) {
     var stats = stats_package.Stats.fromData(values);
-    print("$label: ${stats.withPrecision(3)}");
+    var rounded = stats.withPrecision(3);
+    print("$label: ${rounded.median} (median)");
   }
 
   printStats("Rounds", gameStats.map((stats) => stats.roundCount));
@@ -21,8 +22,14 @@ List<Stats> runSimulations(Rules rules, int count) {
   return gameStats;
 }
 
-void main(List<String> arguments) {
-  final rules = Rules();
-  final gameStats = runSimulations(rules, 10000);
+void runSimForRules(Rules rules, String name, {int count = 50000}) {
+  print("Simulating with rules \"$name\" N=$count");
+  final gameStats = runSimulations(rules, count);
   printAggregateStatistics(gameStats);
+}
+
+void main(List<String> arguments) {
+  runSimForRules(Rules(cardsPerWar: 1), "Cards per War = 1");
+  runSimForRules(Rules(cardsPerWar: 3), "Cards per War = 3");
+  runSimForRules(Rules(cardsPerWar: 0), "Cards per War = 0");
 }
